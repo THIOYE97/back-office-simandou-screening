@@ -117,6 +117,5 @@ export async function put<T>(url: string, body?: any): Promise<T> {
 
 export async function del<T>(url: string): Promise<T> {
   const { data } = await api.delete(url);
-  return data; where.append("u.tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid")
-}
+  return data;}
 
