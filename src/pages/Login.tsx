@@ -1,20 +1,31 @@
 // src/pages/Login.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  AlertTriangle,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  Shield,
+  Loader2,
+} from "lucide-react";
 import { login } from "../api";
 import { setToken } from "../auth/auth";
 
 export default function Login() {
   const nav = useNavigate();
-  const [email,    setEmail]    = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPwd,  setShowPwd]  = useState(false);
-  const [busy,     setBusy]     = useState(false);
-  const [err,      setErr]      = useState<string | null>(null);
+  const [showPwd, setShowPwd] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim() || !password) return;
+
     setErr(null);
     setBusy(true);
     try {
@@ -29,44 +40,151 @@ export default function Login() {
   }
 
   return (
-    <div className="authShell">
-      <form className="authCard" onSubmit={onSubmit} noValidate>
-
+    <div
+      className="authShell"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+        background: "var(--bg-base, #0A0A0B)",
+      }}
+    >
+      <form
+        className="authCard"
+        onSubmit={onSubmit}
+        noValidate
+        style={{
+          width: "100%",
+          maxWidth: 420,
+          padding: 32,
+          borderRadius: 20,
+          background: "var(--bg-card, #141518)",
+          border: "1px solid var(--border, rgba(255,255,255,0.08))",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.28)",
+        }}
+      >
         {/* Brand */}
-        <div className="authBrand">
-          <div className="brandMark">
-            {/* Shield icon */}
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6L12 2z" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 22 }}>
+          <div
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 12,
+              background: "var(--accent-light, rgba(45,127,214,0.14))",
+              border: "1px solid var(--border-active, rgba(45,127,214,0.28))",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--text-accent, #5BA8F5)",
+              flexShrink: 0,
+            }}
+          >
+            <Shield size={20} strokeWidth={2.1} />
           </div>
+
           <div>
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 15, letterSpacing: "-0.02em" }}>
-              Simandou-Screening
+            <div
+              style={{
+                fontWeight: 800,
+                fontSize: 15,
+                letterSpacing: "-0.02em",
+                color: "var(--text-primary, #F3F4F6)",
+              }}
+            >
+              Simandou Screening
             </div>
-            <div className="small" style={{ marginTop: 1, opacity: 0.7 }}>Back Office · Admin</div>
+            <div
+              style={{
+                marginTop: 2,
+                fontSize: 12,
+                color: "var(--text-muted, rgba(243,244,246,0.45))",
+              }}
+            >
+              Back Office · Admin
+            </div>
           </div>
         </div>
 
         {/* Heading */}
-        <div className="authTitle">Connexion</div>
-        <div className="authSub">Accédez à votre espace d'administration sécurisé.</div>
+        <div style={{ marginBottom: 22 }}>
+          <div
+            style={{
+              fontSize: 26,
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.05,
+              color: "var(--text-primary, #F3F4F6)",
+              marginBottom: 8,
+            }}
+          >
+            Connexion
+          </div>
+          <div
+            style={{
+              fontSize: 13.5,
+              lineHeight: 1.5,
+              color: "var(--text-secondary, rgba(243,244,246,0.72))",
+            }}
+          >
+            Accédez à votre espace d'administration sécurisé.
+          </div>
+        </div>
 
         {/* Error */}
         {err && (
-          <div className="alert alertErr animate-slideUp" style={{ marginBottom: 18, fontSize: 13 }}>
-            <span style={{ marginRight: 6 }}>⚠️</span>{err}
+          <div
+            className="alert alertErr"
+            style={{
+              marginBottom: 18,
+              fontSize: 13,
+              borderRadius: 12,
+              padding: "12px 14px",
+              border: "1px solid rgba(232,64,64,0.28)",
+              background: "rgba(232,64,64,0.10)",
+              color: "#E84040",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <AlertTriangle size={16} strokeWidth={2.2} />
+            <span>{err}</span>
           </div>
         )}
 
         {/* Email */}
-        <div className="field" style={{ marginBottom: 12 }}>
-          <label className="nice-label" htmlFor="email">Adresse e-mail</label>
-          <div className="inputWrapper">
-            <svg className="inputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-              <rect x="2" y="4" width="20" height="16" rx="3"/>
-              <path d="m2 7 10 7 10-7"/>
-            </svg>
+        <div className="field" style={{ marginBottom: 14 }}>
+          <label
+            htmlFor="email"
+            style={{
+              display: "block",
+              marginBottom: 6,
+              fontSize: 12,
+              fontWeight: 600,
+              color: "var(--text-muted, rgba(243,244,246,0.45))",
+            }}
+          >
+            Adresse e-mail
+          </label>
+
+          <div style={{ position: "relative" }}>
+            <span
+              style={{
+                position: "absolute",
+                left: 12,
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "var(--text-muted, rgba(243,244,246,0.45))",
+                display: "flex",
+                alignItems: "center",
+                pointerEvents: "none",
+              }}
+            >
+              <Mail size={16} strokeWidth={2.1} />
+            </span>
+
             <input
               id="email"
               className="input"
@@ -77,18 +195,42 @@ export default function Login() {
               autoComplete="email"
               autoFocus
               required
+              style={{ paddingLeft: 40 }}
             />
           </div>
         </div>
 
         {/* Password */}
-        <div className="field" style={{ marginBottom: 24 }}>
-          <label className="nice-label" htmlFor="password">Mot de passe</label>
-          <div className="inputWrapper">
-            <svg className="inputIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-              <rect x="3" y="11" width="18" height="11" rx="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
+        <div className="field" style={{ marginBottom: 22 }}>
+          <label
+            htmlFor="password"
+            style={{
+              display: "block",
+              marginBottom: 6,
+              fontSize: 12,
+              fontWeight: 600,
+              color: "var(--text-muted, rgba(243,244,246,0.45))",
+            }}
+          >
+            Mot de passe
+          </label>
+
+          <div style={{ position: "relative" }}>
+            <span
+              style={{
+                position: "absolute",
+                left: 12,
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "var(--text-muted, rgba(243,244,246,0.45))",
+                display: "flex",
+                alignItems: "center",
+                pointerEvents: "none",
+              }}
+            >
+              <Lock size={16} strokeWidth={2.1} />
+            </span>
+
             <input
               id="password"
               className="input"
@@ -98,31 +240,34 @@ export default function Login() {
               placeholder="••••••••••"
               autoComplete="current-password"
               required
-              style={{ paddingRight: 44 }}
+              style={{ paddingLeft: 40, paddingRight: 44 }}
             />
-            {/* Toggle visibility */}
+
             <button
               type="button"
               onClick={() => setShowPwd((v) => !v)}
               style={{
-                position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
-                background: "none", border: "none", cursor: "pointer",
-                color: "var(--muted2)", padding: 4, lineHeight: 0,
+                position: "absolute",
+                right: 10,
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "var(--text-muted, rgba(243,244,246,0.45))",
+                padding: 4,
+                lineHeight: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
               tabIndex={-1}
               title={showPwd ? "Masquer" : "Afficher"}
             >
               {showPwd ? (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                  <line x1="1" y1="1" x2="23" y2="23"/>
-                </svg>
+                <EyeOff size={16} strokeWidth={2.1} />
               ) : (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
+                <Eye size={16} strokeWidth={2.1} />
               )}
             </button>
           </div>
@@ -133,26 +278,39 @@ export default function Login() {
           type="submit"
           className="btn btnPrimary btn-lg btn-full"
           disabled={busy || !email.trim() || !password}
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "11px 18px",
+            borderRadius: 12,
+            textDecoration: "none",
+          }}
         >
           {busy ? (
             <>
-              <svg className="animate-spin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-              </svg>
+              <Loader2 size={16} strokeWidth={2.4} className="animate-spin" />
               Connexion…
             </>
           ) : (
             <>
               Se connecter
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <path d="M5 12h14M13 6l6 6-6 6"/>
-              </svg>
+              <ArrowRight size={16} strokeWidth={2.4} />
             </>
           )}
         </button>
 
         {/* Footer note */}
-        <p style={{ textAlign: "center", marginTop: 20, fontSize: 12, color: "var(--muted2)" }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: 18,
+            fontSize: 12,
+            color: "var(--text-muted, rgba(243,244,246,0.45))",
+          }}
+        >
           Accès réservé aux administrateurs autorisés.
         </p>
       </form>
